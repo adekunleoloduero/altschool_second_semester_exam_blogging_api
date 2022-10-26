@@ -1,0 +1,29 @@
+{
+  "name": "altschool_second_semester_exam_blogging_api",
+  "version": "1.0.0",
+  "description": "This API has a general endpoint that shows a list of articles that have been created by different people, and anybody that calls this endpoint, should be able to read a blog created by them or other users.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "start:dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adekunleoloduero/altschool_second_semester_exam_blogging_api.git"
+  },
+  "author": "Sheriff Adekunle Tajudeen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adekunleoloduero/altschool_second_semester_exam_blogging_api/issues"
+  },
+  "homepage": "https://github.com/adekunleoloduero/altschool_second_semester_exam_blogging_api#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
