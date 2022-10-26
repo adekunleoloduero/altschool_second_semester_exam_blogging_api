@@ -2,6 +2,9 @@ const express = require('express');
 require('dotenv').config();
 
 
+require('./src/db'); //Connect to database
+
+
 
 //Create server
 const app = express();
