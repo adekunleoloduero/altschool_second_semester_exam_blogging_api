@@ -1,38 +1,11 @@
-const express = require('express');
+const app = require('./index');
 require('dotenv').config();
 
-
-require('./src/db'); //Connect to database
-
+require('./src/db'); //Connect to production database
 
 
-//Create server
-const app = express();
 
-
-//Homepage
-app.get('/', (req, res) => {
-    res.json({ message: "Welcome to the Homepage." });
-});
-
-
-//Error Middleware
-app.use((error, req, res, next) => {
-    if (error) {
-        res.status(500).json({ message: "Internal Server Error." });
-    }
-    next();
-});
-
-
-//Catch-all route
-app.get('*', (req, res) => {
-    res.status(404).json({ message: "Not Found"});
-});
+const PORT = process.env.PORT;
 
 //Start the server
-const PORT = process.env.PORT;
 app.listen(PORT, ()=> {console.log(`Server is running on port: ${PORT}`)});
-
-
-module.exports = app;
