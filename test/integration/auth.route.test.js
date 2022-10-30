@@ -5,7 +5,7 @@ const { connect } = require('./db');
 
 
 
-describe('POST /signup and POST /signin', () => {
+describe('POST /api/signup and POST /api/signin', () => {
     let conn;
 
     const testUserInfo = {
@@ -42,7 +42,7 @@ describe('POST /signup and POST /signin', () => {
             "email": "janedoe@gmail.com",
             "password": "jane123"
         };
-        const response = await request(app).post('/signup').send(userInfo);
+        const response = await request(app).post('/api/signup').send(userInfo);
         expect(response.status).toBe(201);
         expect(response.body.info).toEqual({ message: "Signup was successful." });
         expect(response.body.user).toHaveProperty('firstName');
@@ -59,7 +59,7 @@ describe('POST /signup and POST /signin', () => {
             "email": testUserInfo.email,
             "password": "arya123"
         };
-        const response = await request(app).post('/signup').send(userInfo);
+        const response = await request(app).post('/api/signup').send(userInfo);
         expect(response.status).toBe(400);
         expect(response.body).toEqual({ message: "A user with this email already exists." });
     })
@@ -71,7 +71,7 @@ describe('POST /signup and POST /signin', () => {
             "password": testUserInfo.password
         }
 
-        const response = await request(app).post('/signin').send(userCredentials);
+        const response = await request(app).post('/api/signin').send(userCredentials);
         expect(response.status).toBe(200);
         expect(response.body.info).toEqual({ message: `Welcome back ${testUserInfo.firstName}.`});
         expect(response.body).toHaveProperty("token");
@@ -84,7 +84,7 @@ describe('POST /signup and POST /signin', () => {
             "password": testUserInfo.password
         }
         
-        const response = await request(app).post('/signin').send(userCredentials);
+        const response = await request(app).post('/api/signin').send(userCredentials);
         expect(response.status).toBe(400);
         expect(response.body).toEqual({ message: "User not found." });
     });
@@ -96,7 +96,7 @@ describe('POST /signup and POST /signin', () => {
             "password": "InvalidPassword"
         }
         
-        const response = await request(app).post('/signin').send(userCredentials);
+        const response = await request(app).post('/api/signin').send(userCredentials);
         expect(response.status).toBe(400);
         expect(response.body).toEqual({ message: "Password is incorrect." });
     });

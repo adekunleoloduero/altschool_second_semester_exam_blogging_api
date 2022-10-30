@@ -71,8 +71,8 @@ passport.use('signin',
                     return done(null, false, { message: "User not found." });
                 }
                 
-                const passwordIsValid = await user.isValidPassword(password);
-                if (!passwordIsValid) {
+                const isValidPassword = await user.validatePassword(password);
+                if (!isValidPassword) {
                     return done(null, false, {message: "Password is incorrect." });
                 }
                 return done(null, user, { message: `Welcome back ${user.firstName}.`});             

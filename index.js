@@ -11,12 +11,18 @@ app.use(express.json()); //Parse payload
 
 
 //Register routes middlewares to the app
-app.use('/', authRoute);
+app.use('/api', authRoute);
 
 
-//Homepage
-app.get('/', (req, res) => {
-    res.json({ message: "Welcome to the Homepage." });
+//The home route: redirects to the general endpoint
+app.use('/', (req, res) => {
+    res.redirect('/api');
+})
+
+
+//General endpoint
+app.get('/api', (req, res) => {
+    return res.json({ message: "This is the general endpoint." });
 });
 
 
