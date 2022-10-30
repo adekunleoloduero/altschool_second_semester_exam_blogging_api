@@ -1,5 +1,6 @@
 const express = require('express');
 const authRoute = require('./src/routes/auth.route');
+const generalRoute = require('./src/routes/general.route');
 require('./src/middlewares/auth.middleware');
 
 
@@ -12,6 +13,7 @@ app.use(express.json()); //Parse payload
 
 //Register routes middlewares to the app
 app.use('/api', authRoute);
+app.use('/api', generalRoute);
 
 
 //The home route: redirects to the general endpoint
@@ -19,11 +21,6 @@ app.use('/', (req, res) => {
     res.redirect('/api');
 })
 
-
-//General endpoint
-app.get('/api', (req, res) => {
-    return res.json({ message: "This is the general endpoint." });
-});
 
 
 //Error Middleware
