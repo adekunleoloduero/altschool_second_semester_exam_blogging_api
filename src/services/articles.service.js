@@ -1,3 +1,4 @@
+const articleModel = require('../models/article.model');
 const ArticleModel = require('../models/article.model');
 
 
@@ -44,7 +45,17 @@ const getPublishedArticles = async(query) => {
 
 
 
+const createArticle = async(body, userId) => {
+    const article = new ArticleModel(body);
+    article.author = userId;
+    const readingTime = article.calculateReadingTime(body.body); //calculateReadingTime is a helper method in the articleModel
+    article.readingTime = readingTime;
+    article.save();
+    return article;
+}
+
 
 module.exports = {
     getPublishedArticles,
+    createArticle,
 }

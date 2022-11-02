@@ -26,8 +26,11 @@ const userSchema = new Schema({
             type: String,
             required: true,
         },
-    },
-    {timestamps: true}
+        createdAt: {
+            type: Date,
+            default: Date.now()
+        }
+    }
 );
 
 

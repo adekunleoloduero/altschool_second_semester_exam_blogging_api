@@ -5,31 +5,42 @@ const articleSchema = new Schema(
     {
         title: {
             type: String,
-            required: true,
-            unique: true
+            required: true
         },
         description: String,
-        author: {
-            type: Schema.Types.ObjectId,
-            ref: "users"
-        },
+        author: String,
         state: {
-            type: {String, enum: ["draft", "published"]},
+            type: String, 
+            enum: ["draft", "published"],
             default: "draft",
         },
-        read_count: Number,
-        reading_time: Number,
-        tags: Array,
         body: {
             type: String,
             required: true
         },
+        readCount: {
+            type: Number,
+            default: 0
+        },
+        readingTime: Number,
+        tags: Array,
         timestamp: {
             type: Date,
-            default: new Date().now()
+            default: Date.now()
         }
     }
 );
+
+
+
+//Calculate article readingTime
+articleSchema.methods.calculateReadingTime = function(content) {
+    const wordCount = this.body.split(' ').length;
+    const readingTime = wordCount / 250; //250 words per minute is average reading speed
+    const readingTimeMinutes = Math.ceil(readingTime);
+    return readingTimeMinutes;
+};
+
 
 
 

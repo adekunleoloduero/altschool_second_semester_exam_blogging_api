@@ -49,7 +49,6 @@ describe('POST /api/signup and POST /api/signin', () => {
         expect(response.body.user).toHaveProperty('lastName');
         expect(response.body.user).toHaveProperty('email');
         expect(response.body.user).toHaveProperty('createdAt');
-        expect(response.body.user).toHaveProperty('updatedAt');
     })
 
     it("Returns the expected message if a user with the email provided already exists", async() => {

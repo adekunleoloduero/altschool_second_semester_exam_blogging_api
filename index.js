@@ -1,6 +1,7 @@
 const express = require('express');
+const passport = require('passport');
 const authRoute = require('./src/routes/auth.route');
-const generalRoute = require('./src/routes/articles.route');
+const protectedArticlesRoute = require('./src/routes/articles.protected.route');
 require('./src/middlewares/auth.middleware');
 
 
@@ -13,7 +14,7 @@ app.use(express.json()); //Parse payload
 
 //Register routes middlewares to the app
 app.use('/api', authRoute);
-app.use('/api/articles', generalRoute);
+app.use('/api/articles', passport.authenticate('jwt', {session: false}), protectedArticlesRoute);
 
 
 //The home route: redirects to the general endpoint
