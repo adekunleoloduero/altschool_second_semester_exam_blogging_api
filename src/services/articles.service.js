@@ -1,4 +1,3 @@
-const articleModel = require('../models/article.model');
 const ArticleModel = require('../models/article.model');
 
 
@@ -55,7 +54,22 @@ const createArticle = async(body, userId) => {
 }
 
 
+const updateOwnArticleState = async(id, state, user) => {
+    const article = await ArticleModel.findById(id);
+    
+    if (article.author == user) { //Ensure that the article belongs to the logged in user
+        let article = await ArticleModel.findByIdAndUpdate(id, state, {new: true});
+        
+        if (!article) {
+            return false;
+        }
+        return article;
+    }
+}
+
+
 module.exports = {
     getPublishedArticles,
     createArticle,
+    updateOwnArticleState,
 }

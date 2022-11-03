@@ -4,7 +4,7 @@ const articlesController = require('../controllers/articles.controller');
 
 
 //Create an article
-router.post('/', async(req, res, next) => {
+router.post('/create', async(req, res, next) => {
     try {
         articlesController.createArticle(req, res);
     } catch(error) {
@@ -13,6 +13,16 @@ router.post('/', async(req, res, next) => {
 });
 
 
+
+
+//Update own article state
+router.patch('/publish/:id', async(req, res, next) => {
+    try {
+        articlesController.updateOwnArticleState(req, res)
+    } catch(error) {
+        next(error);
+    }
+})
 
 
 module.exports = router;
