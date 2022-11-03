@@ -43,5 +43,4 @@ articleSchema.methods.calculateReadingTime = function(content) {
 
 
 
-
 module.exports = model("articles", articleSchema);

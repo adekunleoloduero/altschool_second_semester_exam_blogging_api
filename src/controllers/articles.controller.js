@@ -30,7 +30,21 @@ const updateOwnArticleState = async(req, res) => {
 }
 
 
+const editOwnArticle = async(req, res) => {
+    const id = req.params.id;
+    const body = req.body;
+    const user = req.user.email;
+    const article = await articlesService.editOwnArticle(id, body, user);
+    if (article) {
+        return res.status(200).json({message: "Your changes have been saved.", article })
+    } else {
+        return res.status(401).json({ message: "You don't have the permission to edit this article."})
+    }
+}
+
+
 module.exports = {
     createArticle,
     updateOwnArticleState,
+    editOwnArticle,
 }

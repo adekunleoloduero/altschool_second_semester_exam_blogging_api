@@ -67,9 +67,31 @@ const updateOwnArticleState = async(id, state, user) => {
     }
 }
 
+//Editable properties are title, description, body and tags
+const editOwnArticle = async(id, body, user) => {
+    const article = await ArticleModel.findById(id);
+    
+    if (article.author == user) { //Ensure that the article belongs to the logged in user
+        let article = await ArticleModel.findByIdAndUpdate(id, body, {new: true});
+        const readingTime = await article.calculateReadingTime(article.body); //Update readingTime
+        article.readingTime = readingTime;
+        article.save();
+
+        if (!article) {
+            return false;
+        }
+        return article;
+    } else {
+        return false;
+    }
+}
+
+
+
 
 module.exports = {
     getPublishedArticles,
     createArticle,
     updateOwnArticleState,
+    editOwnArticle,
 }

@@ -25,4 +25,14 @@ router.patch('/publish/:id', async(req, res, next) => {
 })
 
 
+//Edit own article (body)
+router.patch('/edit/:id', async(req, res, next) => {
+    try {
+        articlesController.editOwnArticle(req, res);
+    } catch(error) {
+        next(error);
+    }
+});
+
+
 module.exports = router;
