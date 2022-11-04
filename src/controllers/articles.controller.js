@@ -1,3 +1,4 @@
+const articleModel = require('../models/article.model');
 const articlesService = require('../services/articles.service');
 
 
@@ -54,9 +55,30 @@ const deleteOwnArticle = async(req, res) => {
     }   
 }
 
+
+const getOwnArticles = async(req, res) => {
+    const user = req.user.email;
+    let state;
+    let articles
+    if (req.query) {
+        state = req.query.state;
+        articles = await articlesService.getOwnArticles(user, state);
+    } else {
+        articles = await articlesService.getOwnArticles(user, null);
+    }
+    if (articles) {
+        return res.status(200).json(articles);
+    } else {
+        return res.status(401).json({message: "Please signin to see a list of your articles."})
+    }
+}
+
+
+
 module.exports = {
     createArticle,
     updateOwnArticleState,
     editOwnArticle,
     deleteOwnArticle,
+    getOwnArticles,
 }

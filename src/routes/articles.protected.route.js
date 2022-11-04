@@ -46,4 +46,14 @@ router.delete('/delete/:id', async(req, res, next) => {
 })
 
 
+//Get list of own article
+router.get('/my-articles', async(req, res, next) => {
+    try {
+        await articlesController.getOwnArticles(req, res);
+    } catch(error) {
+        next(error);
+    }
+})
+
+
 module.exports = router;

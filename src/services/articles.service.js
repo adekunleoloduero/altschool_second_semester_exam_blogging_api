@@ -104,10 +104,26 @@ const deleteOwnArticle = async(id, user) => {
 }
 
 
+
+const getOwnArticles = async(user, state) => {
+    if (user) { //Ensure that the user is signed in
+        const query = {};
+        query.author = user;
+        if (state) {
+            query.state = state;
+        } 
+        const articles = await ArticleModel.find(query)
+        .limit(20);
+        return articles;
+    } else return false;
+}
+
+
 module.exports = {
     getPublishedArticles,
     createArticle,
     updateOwnArticleState,
     editOwnArticle,
     deleteOwnArticle,
+    getOwnArticles,
 }
