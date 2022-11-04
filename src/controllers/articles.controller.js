@@ -43,8 +43,20 @@ const editOwnArticle = async(req, res) => {
 }
 
 
+const deleteOwnArticle = async(req, res) => {
+    const id = req.params.id;
+    const user = req.user.email;
+    const article = await articlesService.deleteOwnArticle(id, user);
+    if (article) {
+        return res.status(200).json({ message: "Deleted one (1) article."})
+    } else {
+        return res.status(401).json({message: "You don't have the permission to delete this article."})
+    }   
+}
+
 module.exports = {
     createArticle,
     updateOwnArticleState,
     editOwnArticle,
+    deleteOwnArticle,
 }

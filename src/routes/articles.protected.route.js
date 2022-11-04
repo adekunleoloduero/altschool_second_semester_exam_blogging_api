@@ -25,7 +25,8 @@ router.patch('/publish/:id', async(req, res, next) => {
 })
 
 
-//Edit own article (body)
+
+//Edit own article
 router.patch('/edit/:id', async(req, res, next) => {
     try {
         articlesController.editOwnArticle(req, res);
@@ -33,6 +34,16 @@ router.patch('/edit/:id', async(req, res, next) => {
         next(error);
     }
 });
+
+
+//delete own article
+router.delete('/delete/:id', async(req, res, next) => {
+    try {
+        await articlesController.deleteOwnArticle(req, res);
+    } catch(error) {
+        next(error);
+    }
+})
 
 
 module.exports = router;

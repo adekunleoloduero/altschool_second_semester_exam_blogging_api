@@ -88,10 +88,26 @@ const editOwnArticle = async(id, body, user) => {
 
 
 
+const deleteOwnArticle = async(id, user) => {
+    let article = await ArticleModel.findById(id);
+    
+    if (article.author == user) { //Ensure that the article belongs to the logged in user
+        await ArticleModel.findByIdAndDelete(id); //Delete the article
+        //Confirm that it was deleted successfully
+        article = await ArticleModel.findById(id);
+        if (!article) {
+            return true; //Assert that the article has been deleted
+        }
+    } else {
+        return false; //If the user is unauthorized
+    }
+}
+
 
 module.exports = {
     getPublishedArticles,
     createArticle,
     updateOwnArticleState,
     editOwnArticle,
+    deleteOwnArticle,
 }
