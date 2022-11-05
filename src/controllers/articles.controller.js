@@ -20,6 +20,14 @@ const getPublishedArticles = async(req, res) => {
 
 
 
+const getPublishedArticleById = async(req, res) => {
+    const id = req.params.id;
+    const articleAndAuthor = await articlesService.getPublishedArticleById(id);
+    return res.status(200).json(articleAndAuthor);
+}
+
+
+
 const createArticle = async(req, res) => {
     const body = req.body;
     const user = req.user.email; //Email of signed in user derived from decrypted jwt token
@@ -85,6 +93,7 @@ const getOwnArticles = async(req, res) => {
 
 module.exports = {
     getPublishedArticles,
+    getPublishedArticleById,
     createArticle,
     updateOwnArticleState,
     editOwnArticle,

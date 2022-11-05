@@ -16,6 +16,15 @@ router.get('/', async(req, res, next) => {
 });
 
 
+router.get('/:id', async(req, res, next) => {
+    try {
+        await articlesController.getPublishedArticleById(req, res);
+    } catch(error) {
+        next(error);
+    }
+})
+
+
 
 
 module.exports = router;
