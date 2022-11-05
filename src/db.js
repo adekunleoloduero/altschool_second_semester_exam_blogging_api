@@ -9,7 +9,7 @@ class Database {
     }
 
     _connect() {
-        mongoose.connect(`mongodb://${process.env.DATABASE_URI}`)
+        mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true})
         .then(()=> {
             console.log('Connected to database successfully.');
         })

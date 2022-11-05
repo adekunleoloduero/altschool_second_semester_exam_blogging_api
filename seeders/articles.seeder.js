@@ -6,9 +6,9 @@ require('dotenv').config()
 
 
 //Connect to DB
-mongoose.connect(`mongodb://${process.env.DATABASE_URI}`, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.DATABASE_URI, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {
-    console.log('Connected to mongodb successful.');
+    console.log('Connected to mongodb successfully.');
 }).catch(() => {
     console.log('Connection to mongodb failed.');
 })
