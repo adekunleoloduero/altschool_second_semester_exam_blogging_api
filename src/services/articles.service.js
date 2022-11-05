@@ -1,4 +1,5 @@
 const ArticleModel = require('../models/article.model');
+const UserModel = require('../models/user.model');
 
 
 
@@ -60,6 +61,22 @@ const getPublishedArticles = async(query) => {
     
     return articles;
 };
+
+
+
+const getPublishedArticleById = async(id) => {
+    let article = await ArticleModel.findById(id);
+    if (article && article.state == 'published') { //Confirm that the article is published
+        const readCount = article.readCount + 1; //increment article read count by 1
+        article = await ArticleModel.findByIdAndUpdate(id, {readCount}, ({new: true})); //Update article readCount and return the updated article
+        //Return author information with the article
+        const authorEmail = article.author;
+        let author = await UserModel.findOne({ email: authorEmail });
+        author = author.toObject();
+        delete author.password; //Delete password from author information
+        return {author, article};
+    } 
+}
 
 
 
@@ -140,6 +157,7 @@ const getOwnArticles = async(user, state) => {
 
 module.exports = {
     getPublishedArticles,
+    getPublishedArticleById,
     createArticle,
     updateOwnArticleState,
     editOwnArticle,
