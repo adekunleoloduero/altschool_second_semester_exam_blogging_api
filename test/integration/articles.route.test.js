@@ -1,6 +1,6 @@
 const request = require('supertest')
 const UserModel = require('../../src/models/article.model')
-const app = require('../../index');
+const app = require('../../app');
 const { connect } = require('./db');
 
 

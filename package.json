@@ -2,9 +2,10 @@
   "name": "altschool_second_semester_exam_blogging_api",
   "version": "1.0.0",
   "description": "This API has a general endpoint that shows a list of articles that have been created by different people, and anybody that calls this endpoint, should be able to read a blog created by them or other users.",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon app.js",
+    "start": "node index.js",
+    "start:dev": "nodemon index.js",
     "articles:seed": "node ./seeders/articles.seeder.js",
     "test": "jest --detectOpenHandles"
   },
