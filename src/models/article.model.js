@@ -23,7 +23,10 @@ const articleSchema = new Schema(
             default: 0
         },
         readingTime: Number,
-        tags: Array,
+        tags: {
+            type: Array,
+            lowercase: true
+        },
         timestamp: {
             type: Date,
             default: Date.now()

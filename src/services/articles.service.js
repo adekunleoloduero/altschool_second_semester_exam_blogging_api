@@ -3,39 +3,58 @@ const ArticleModel = require('../models/article.model');
 
 
 const getPublishedArticles = async(query) => {
-    //
     let articles;
     if (query) {
+        //
         const searchBy = {};
         const orderBy = {};
+        searchBy.state = "published" //Ensure that only published articles are returned
         
-        //Filter parameters
+        //Filter parameters (state, title and tags)
         if (query.author) {
-            searchBy.state = query.state;
+            searchBy.author = query.author;
         }
         if (query.title) {
             searchBy.title = query.title;
         }
         if (query.tags) {
-            searchBy.tags = query.tags.split('');
+            let tags = query.tags.split(',');
+            //Ensure that all the tags are in lowercase to match with structure of saved documents
+            tags = tags.map((tag) => {
+                return tag.toLowerCase();
+            });
+            searchBy.tags = {$in: tags};
         }
 
-        //Order parameters
+        //Order parameters (readCount, readingTime and timestamp)
         if (query.readCount) {
-            orderBy.readCount = query.readCount
+            if (query.readCount == 'asc') {
+                orderBy.readCount = 1;
+            } else if (query.readCount == 'desc') {
+                orderBy.readCount = -1;
+            }
         }
         if (query.readingTime) {
-            orderBy.readingTime = query.readingTime
+            if (query.readingTime == 'asc') {
+                orderBy.readingTime = 1;
+            } else if (query.readingTime == 'desc') {
+                orderBy.readingTime = -1;
+            }
         }
         if (query.timestamp) {
-            orderBy.timestamp = query.timestamp;
+            if (query.timestamp == 'asc') {
+                orderBy.timestamp = 1;
+            } else if (query.timestamp == 'desc') {
+                orderBy.timestamp = -1;
+            }
         }
         
         articles = await ArticleModel.find(searchBy)
+        .where("state").equals("published")
         .limit(20)
-        .sort(orderBy)
+        .sort(orderBy);
     } else {
-        articles = await ArticleModel.find()
+        articles = await ArticleModel.find({ state: "published" })
         .limit(20);
     }
     

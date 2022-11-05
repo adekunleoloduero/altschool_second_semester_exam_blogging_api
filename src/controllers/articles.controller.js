@@ -4,9 +4,17 @@ const articlesService = require('../services/articles.service');
 
 
 
+//Optional query parameters:
+//Filtering (author, title and tags)
+//Ordering (readCount, readingTime and timestamp)
 const getPublishedArticles = async(req, res) => {
+    let articles;
     const query = req.query;
-    const articles = await articlesService.getPublishedArticles(query);
+    if (query) {
+        articles = await articlesService.getPublishedArticles(query);
+    } else {
+        articles = await articlesService.getPublishedArticles(null);
+    }    
     return res.status(200).json(articles);
 }
 
@@ -76,6 +84,7 @@ const getOwnArticles = async(req, res) => {
 
 
 module.exports = {
+    getPublishedArticles,
     createArticle,
     updateOwnArticleState,
     editOwnArticle,
