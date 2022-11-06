@@ -153,7 +153,7 @@ Success
 Success
 ```
 [
-    "articles": {
+    {
         "title": "Example Article",
         "description": "An example aticle by Jane Doe",
         "state": "draft",
@@ -360,7 +360,7 @@ Success
 Success
 ```
 [
-    "articles": {
+    {
         "title": "Example Article",
         "description": "An example aticle by Jane Doe",
         "state": "draft",

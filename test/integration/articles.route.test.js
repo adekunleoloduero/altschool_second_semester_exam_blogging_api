@@ -42,11 +42,14 @@ describe("Protected articles route", () => {
     let testArticle2ID;
     let accessToken1; //Will be used to access protected routes by testUser1
     let accessToken2; //Will be used to access protected routes by testUser2
+    let testArticle1ReadCount;
 
     beforeAll(async () => {
         conn = await connect()
+        
+    })
 
-
+    beforeEach(async () => {
         // Signup and signin test user 1
         let response = await request(app).post('/api/signup').send(testUser1);
         
@@ -58,7 +61,7 @@ describe("Protected articles route", () => {
         //Create test article 1 and get it's ID
         response = await request(app).post('/api/articles/create').send(testArticle1).set('Authorization', `Bearer ${accessToken1}`);
         testArticle1ID = response.body.article['_id'];
-        console.log(testArticle1ID)
+        testArticle1ReadCount = response.body.article.readCount;
         
         
         //Signup and signin test user 2
@@ -72,8 +75,7 @@ describe("Protected articles route", () => {
         //Create test article 2 and get it's ID
         response = await request(app).post('/api/articles/create').send(testArticle2).set('Authorization', `Bearer ${accessToken2}`);
         testArticle2ID = response.body.article['_id'];
-    })
-
+    });
 
     afterEach(async () => {
         await conn.cleanup()
@@ -108,11 +110,85 @@ describe("Protected articles route", () => {
         expect(response.text).toBe("Unauthorized");
     });
 
+    
+    it('GET /api/articles - Get a list of published articles of not more than 20 per page.', async() => {
+        const queryParams = {
+            "author": "janedoe@gmail.com",
+        }
+        const response = await request(app).get('/api/articles').query(queryParams);
+        expect(response.status).toBe(200);
+        //Number of articles per page should not exceed 20
+        let articles = response.body;
+        expect(articles.length).toBeLessThanOrEqual(20);
+        
+        //Only articles belonging the given author should be returned
+        let searchedByAuthor = true;
+        for (const aticle of response.body) {
+            if (article.author != queryParams.author) {
+                searchedByAuthor = false; //return false if at least 1 article has an author that was not specified
+            }
+            return searchedByAuthor;
+        }
+        expect(searchedByAuthor).toBe(true); //Assert that all articles belong the specified author
+    });
+    
 
-    it("PATCH /api/articles/publish/articleId - Allows only an article's author to update it' state to published", async() => {
-        const response = await request(app).patch(`/api/articles/publish/${testArticle1ID}`).send({ state: "published" }).set("Authorization", `Bearer ${accessToken1}`);
+    // it('GET /api/articles/read/:articleId - returns article with specified ID and increment readCount by 1', async() => {
+    //     //Get current read count
+    //     const prevReadCount = testArticle1ReadCount;
+        
+    //     //Request the article again
+    //     response = await request(app).get(`/api/articles/read/${testArticle1ID}`);
+    //     expect(response.status).toBe(200);
+    //     expect(response.body.article.readCount).toBe(prevReadCount + 1); //readCount should have increased by 1
+    //     expect(response.body).toHaveProperty("author"); //Assert tha author info is returned with the article
+    // });
+    
+
+    it("PATCH /api/articles/publish/:articleId - allows only an article's author to update it' state to published", async() => {
+        const response = await request(app).patch(`/api/articles/publish/${testArticle1ID}`).set("Authorization", `Bearer ${accessToken1}`);
         expect(response.status).toBe(200);
         expect(response.body.message).toBe('Congratulations, your article was successfully published.');
         expect(response.body.article.state).toBe("published");
     })
+
+    it("PATCH /api/articles/edit/:articleId - allows only an article's author to edit it", async() => {
+        const body = {
+            "title": "Updated test article 1",
+            "state": "published"
+        }
+        const response = await request(app).patch(`/api/articles/edit/${testArticle1ID}`).send(body).set("Authorization", `Bearer ${accessToken1}`);
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe('Your changes have been saved.');
+        expect(response.body.article.state).toBe("published");
+    })
+
+    it("DELETE /api/articles/delete/:articleId - allows only an article's author to permanently delete it", async() => {
+        const response = await request(app).delete(`/api/articles/delete/${testArticle1ID}`).set("Authorization", `Bearer ${accessToken1}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({message: 'Deleted one (1) article.' });
+    })
+
+
+    it('GET /api/articles/my-articles - returns a list of articles written by logged in user', async() => {
+        const queryParams = {
+            "state": "published"
+        }
+        const response = await request(app).get('/api/articles/my-articles').query(queryParams).set("Authorization", `Bearer ${accessToken1}`);
+        expect(response.status).toBe(200);
+        //Number of articles per page should not exceed 20
+        let articles = response.body;
+        expect(articles.length).toBeLessThanOrEqual(20);
+        
+        //Only articles with specifed state should be returned
+        let searchedByState = true;
+        for (const aticle of response.body) {
+            if (article.state != queryParams.state) {
+                searchedByState = false; //return false if at least 1 article has a different state
+            }
+            return searchedByState;
+        }
+        expect(searchedByState).toBe(true); //Assert that all articles belong the specified author
+        
+    });
 });
