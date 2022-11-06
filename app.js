@@ -20,7 +20,7 @@ app.use('/api/articles', articlesRoute); //Home route redirects here
 
 //The home route: redirects to the general endpoint
 app.use('/', (req, res) => {
-    return res.status(200).send("Hello, welcome to my Blogging API. This API allow users to create articles or read articles created by others.\nPlease go to /README.md to learn more about how it works and how to run or test it. \nThank you!")
+    return res.status(200).send("Hello, welcome to my Blogging API. This API allow users to create or read articles created by others. Please Go to /api/articles to get a list of published articles or checkout the README.md file in the GitHub Repository to learn more about how it works and how to run or test it. Thank you!")
 })
 
 
