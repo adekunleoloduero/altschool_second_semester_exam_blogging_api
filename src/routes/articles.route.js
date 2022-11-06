@@ -6,7 +6,7 @@ const passport = require('passport');
 
 //GENERAL ENDPOINTS (Require to authentication)
 
-//The general articles endpoint: Home route specifically redirects here
+//The general articles endpoint
 //Gets list of published articles and is accessible to both signed in and not signed in users
 //Optional query parameters:
 //Filtering (author, title and tags)

@@ -20,25 +20,8 @@ app.use('/api/articles', articlesRoute); //Home route redirects here
 
 //The home route: redirects to the general endpoint
 app.use('/', (req, res) => {
-    //Convert query object to query string
-    const query = req.query;
-    let queryString = '';
-    if (query) {
-        const params = [];
-        for (const key in query) {
-            const param = `${key}=${query[key]}`
-            params.push(param);
-        }
-        queryString = params.join('&');
-    }
-    res.redirect('/api/articles?'+ queryString); //Append query string to the general route
+    return res.status(200).send("Hello, welcome to my Blogging API. This API allow users to create articles or read articles created by others.\nPlease go to /README.md to learn more about how it works and how to run or test it. \nThank you!")
 })
-
-
-//Catch-all route
-app.get('*', (req, res) => {
-    return res.status(404).json({ message: "Not Found"});
-});
 
 
 //Error Middleware
@@ -46,6 +29,12 @@ app.use((error, req, res, next) => {
     if (error) {
         return res.status(500).json({ message: "Internal Server Error." });
     } 
+    next(); 
+});
+
+//Catch-all route
+app.get('*', (req, res) => {
+    return res.status(404).json({ message: "Not Found"});
 });
 
 

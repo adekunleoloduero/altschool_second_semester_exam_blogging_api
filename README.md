@@ -64,8 +64,100 @@ Blogging API has a general endpoint that shows a list of articles that have been
 |  body |  String |  required |
 
 
-
 ## APIs
+
+
+### Home
+```
+- Route: /
+- Method: GET
+
+```
+- Response
+Success
+```
+Hello, welcome to my Blogging API. This API allow users to create articles or read articles created by others.Please go to /README.md to learn more about how it works and how to run or test it.
+Thank you!
+
+```
+---
+### Get list of published articles
+
+- Route: /api/articles
+- Method: GET
+- Query Params (Optional): 
+  - author: author_email,
+  - title: article_title,
+  - tags: tag1,tag2,tag3,
+  - readCount: asc/desc,
+  - readingTime: asc/desc,
+  - timestamp: asc/desc
+
+- Responses
+
+Success
+```
+[
+    "article": {
+        "title": "Example Article",
+        "description": "An example aticle by Jane Doe",
+        "state": "draft",
+        "body": "This is an example article written by Jane Doe.",
+        "readCount": 0,
+        "tags": [
+            "node.js",
+            "javascript",
+            "express.js"
+        ],
+        "timestamp": "2022-11-06T00:01:25.847Z",
+        "_id": "6366f9ee91ddd02296a21294",
+        "author": "janedoe@gmail.com",
+        "readingTime": 1
+    },
+    ...
+]
+
+```
+---
+
+### Read a published article
+
+- Route: /api/articles/read/:id
+- Method: GET
+
+- Responses
+
+Success
+```
+{
+    "author": {
+        "_id": "636669e46a42c8dd47741a80",
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "email": "janedoe@gmail.com",
+        "createdAt": "2022-11-05T13:45:54.220Z",
+        "__v": 0
+    },
+    "article": {
+        "_id": "6367515346fa1371f2fb6812",
+        "title": "Example Article 3",
+        "description": "An example aticle by Jane Doe",
+        "state": "published",
+        "body": "This is an example article 3 written by Jane Doe.",
+        "readCount": 1,
+        "tags": [
+            "python",
+            "django",
+            "flask"
+        ],
+        "timestamp": "2022-11-06T06:15:49.257Z",
+        "author": "janedoe@gmail.com",
+        "readingTime": 1,
+        "__v": 0
+    }
+}
+```
+
 ---
 
 ### Signup User
@@ -181,10 +273,24 @@ Success
 Success
 ```
 {
-    state: 1,
-    total_price: 900,
-    created_at: Mon Oct 31 2022 08:35:00 GMT+0100,
-    items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
+    "message": "Congratulations, your article was successfully published.",
+    "article": {
+        "_id": "6366f9ee91ddd02296a21294",
+        "title": "Example Article",
+        "description": "An example aticle by Jane Doe",
+        "state": "published",
+        "body": "This is an example article 3 written by Jane Doe.",
+        "readCount": 0,
+        "tags": [
+            "node.js",
+            "javascript",
+            "express.js"
+        ],
+        "timestamp": "2022-11-06T06:15:49.257Z",
+        "author": "janedoe@gmail.com",
+        "readingTime": 1,
+        "__v": 0
+    }
 }
 ```
 ---
