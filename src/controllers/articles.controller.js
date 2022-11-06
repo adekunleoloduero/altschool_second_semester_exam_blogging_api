@@ -36,11 +36,10 @@ const createArticle = async(req, res) => {
 }
 
 
-const updateOwnArticleState = async(req, res) => {
+const publishOwnArticle = async(req, res) => {
     const id = req.params.id;
-    const state = req.body;
     const user = req.user.email;
-    const article = await articlesService.updateOwnArticleState(id, state, user);
+    const article = await articlesService.publishOwnArticle(id, user);
     if (article) {
         return res.status(200).json({message: "Congratulations, your article was successfully published.", article })
     }
@@ -95,7 +94,7 @@ module.exports = {
     getPublishedArticles,
     getPublishedArticleById,
     createArticle,
-    updateOwnArticleState,
+    publishOwnArticle,
     editOwnArticle,
     deleteOwnArticle,
     getOwnArticles,

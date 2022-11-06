@@ -60,7 +60,7 @@ router.post('/create', async(req, res, next) => {
 //Update own article state
 router.patch('/publish/:id', async(req, res, next) => {
     try {
-        await articlesController.updateOwnArticleState(req, res)
+        await articlesController.publishOwnArticle(req, res)
     } catch(error) {
         next(error);
     }

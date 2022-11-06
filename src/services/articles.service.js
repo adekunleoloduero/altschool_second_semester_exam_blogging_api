@@ -90,12 +90,11 @@ const createArticle = async(body, userId) => {
 }
 
 
-const updateOwnArticleState = async(id, state, user) => {
+const publishOwnArticle = async(id, user) => {
     const article = await ArticleModel.findById(id);
     
     if (article.author == user) { //Ensure that the article belongs to the logged in user
-        let article = await ArticleModel.findByIdAndUpdate(id, state, {new: true});
-        
+        const article = await ArticleModel.findByIdAndUpdate(id, {state: "published"}, {new: true});
         if (!article) {
             return false;
         }
@@ -159,7 +158,7 @@ module.exports = {
     getPublishedArticles,
     getPublishedArticleById,
     createArticle,
-    updateOwnArticleState,
+    publishOwnArticle,
     editOwnArticle,
     deleteOwnArticle,
     getOwnArticles,
